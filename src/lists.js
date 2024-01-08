@@ -16,7 +16,7 @@ const form = document.getElementById("form");
 const formNewTodo = document.getElementById("formNewTodo");
 let selectedListIndex = 0;
 
-const listArray = [];
+let listArray = [];
 const defaultList = new List("Default");
 listArray.push(defaultList);
 
@@ -40,7 +40,9 @@ function addNewList() {
     listArray.push(newList);
     dialog.close();
     showList();
-    form.reset(); // Reset the form
+    form.reset(); 
+
+    saveToLocalStorage();
 }
 
 function selectList(index) {
@@ -55,10 +57,14 @@ function newTodo() {
     const todo = new toDoItem(title, description, dueDate, priority);
     listArray[selectedListIndex].todoItems.push(todo);
     dialogTodo.close();
-    showList(); // Update the list display after adding a new todo
+    showList(); 
     formNewTodo.reset();
+
+    saveToLocalStorage();
    
 }
+
+ 
 newListButton.addEventListener("click", () => {
     dialog.showModal();
 });
@@ -76,9 +82,28 @@ form.addEventListener("submit", (event) => {
 formNewTodo.addEventListener("submit", (event) => {
     event.preventDefault();
     newTodo();
-})
+});
 
 
 
 
-export { showList, addNewList };
+
+
+
+function saveToLocalStorage() {
+    localStorage.setItem('todoList', JSON.stringify(listArray));
+}
+
+function loadFromLocalStorage() {
+    const storedList = localStorage.getItem('todoList');
+    return storedList ? JSON.parse(storedList) : [];
+}
+
+
+
+window.addEventListener('load', () => {
+    listArray = loadFromLocalStorage();
+    showList();
+});
+
+export { showList, addNewList, loadFromLocalStorage };
