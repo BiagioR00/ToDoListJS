@@ -1,0 +1,1 @@
+(()=>{"use strict";const t=document.getElementById("container"),e=[],n=new function(t){this.title="Hello"}("Hello");e.push(n),function(){for(const n of e){const e=document.createElement("p");e.textContent=n.title,t.appendChild(e)}}()})();
